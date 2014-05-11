@@ -27,7 +27,10 @@ hook = weechat.hook_command("sysinfo", SCRIPT_DESC, "", "", "",
 
 
 def model_info():
-    return "15\" Macbook Pro Retina (Late 2013)"
+    model_command = "system_profiler SPHardwareDataType |"
+    model_command += "egrep 'Model Name' | cut -d':' -f2 | sed 's/ //'"
+    model = os.popen(model_command).readlines()[0].rstrip()
+    return model + " "
 
 
 def cpu_info():
