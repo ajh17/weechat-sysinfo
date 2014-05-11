@@ -13,7 +13,6 @@ import os
 import re
 import psutil
 
-WEECHAT_RC_OK = weechat.WEECHAT_RC_OK
 SCRIPT_NAME = 'sysinfo'
 SCRIPT_AUTHOR = 'Akshay Hegde'
 SCRIPT_VERSION = '1.0'
