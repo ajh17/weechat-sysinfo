@@ -2,6 +2,11 @@
 
 A simple system information script for weechat.
 
+## Installation
+    git clone https://github.com/ajh17/weechat-sysinfo.git
+    cd weechat-sysinfo && cp sysinfo.py ~/.weechat/python/
+    cd !$ && ln -s sysinfo.py autoload
+
 ## Dependencies
 * psutil
     * Install with: `[sudo] pip install psutil`
