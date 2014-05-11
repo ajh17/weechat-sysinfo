@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Akshay Hegde <https://github.com/ajh17>
 # NOTE: Only runs on OS X but you can fork this and modify it.
-# NOTE2: Some of this is hard coded.
+# NOTE2: The model information is currently partly hard coded.
 
 try:
     import weechat
@@ -30,7 +30,7 @@ def model_info():
     model_command = "system_profiler SPHardwareDataType |"
     model_command += "egrep 'Model Name' | cut -d':' -f2 | sed 's/ //'"
     model = os.popen(model_command).readlines()[0].rstrip()
-    return model + " "
+    return model + " (15-inch Retina, Late 2013)"
 
 
 def cpu_info():
@@ -84,22 +84,15 @@ def client_info():
 
 def get_sysinfo(data, buffer, args):
     separator = " ･ "
-    computer_model = model_info()
-    cpu_model = cpu_info()
-    memory = ram_info()
-    gpu = gpu_info()
-    os_model = os_info()
-    load = load_info()
-    uptime = uptime_info()
-    irc = client_info()
+    computer_model, cpu_model, memory = model_info(), cpu_info(), ram_info()
+    gpu, system_info, load = gpu_info(), os_info(), load_info()
+    uptime, client = uptime_info(), client_info()
 
-    result_string = ""
-    result_string += "Model: " + computer_model
-    result_string += separator + cpu_model + separator
-    result_string += memory + separator + gpu + separator
-    result_string += uptime + separator + load + separator
-    result_string += "IRC Client: " + irc
-    result_string += separator + os_model
+    result_string = "Model: " + computer_model + separator
+    result_string += cpu_model + separator + memory + separator
+    result_string += gpu + separator + uptime + separator
+    result_string += load + separator + system_info + separator
+    result_string += "IRC Client: " + client
 
     weechat.command(buffer, result_string)
     return weechat.WEECHAT_RC_OK
