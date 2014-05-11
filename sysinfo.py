@@ -15,7 +15,7 @@ import psutil
 
 SCRIPT_NAME = 'sysinfo'
 SCRIPT_AUTHOR = 'Akshay Hegde'
-SCRIPT_VERSION = '1.0'
+SCRIPT_VERSION = '1.1'
 SCRIPT_LICENSE = 'GPL3'
 SCRIPT_DESC = 'Prints out system information out to the channel'
 SCRIPT_COMMAND = "sysinfo"
