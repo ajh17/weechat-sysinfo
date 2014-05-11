@@ -55,7 +55,12 @@ def os_info():
 
 
 def gpu_info():
-    return "GPU: Intel Iris Pro + GeForce GT 750M"
+    gpu_command = "system_profiler SPDisplaysDataType | egrep 'Chip|VR' | "
+    gpu_command += "cut -d ':' -f 2 | sed 's/ //' | paste -s -d ',' - | "
+    gpu_command += "sed 's/,/ \(/' | sed 's/,/\) + /' |"
+    gpu_command += "sed 's/,/ \(/' | sed 's/$/\)/'"
+    gpu = os.popen(gpu_command).readlines()[0].rstrip()
+    return gpu
 
 
 def uptime_info():
@@ -71,7 +76,7 @@ def load_info():
 
 
 def client_info():
-    return "Weechat " + weechat.info_get("version", "")
+    return "WeeChat " + weechat.info_get("version", "")
 
 
 def get_sysinfo(data, buffer, args):
@@ -86,7 +91,6 @@ def get_sysinfo(data, buffer, args):
     irc = client_info()
 
     result_string = ""
-    result_string = result_string.encode('UTF-8')
     result_string += "Model: " + computer_model
     result_string += separator + cpu_model + separator
     result_string += memory + separator + gpu + separator
@@ -95,5 +99,4 @@ def get_sysinfo(data, buffer, args):
     result_string += separator + os_model
 
     weechat.command(buffer, result_string)
-
     return weechat.WEECHAT_RC_OK
