@@ -60,8 +60,8 @@ def ram_info():
     Get the Memory size of this machine.
     '''
     with os.popen("sysctl -n hw.memsize") as mem:
-        mem = float(int(mem.readlines()[0].rstrip()) / BYTES)
-        return "Memory: {} GB".format(mem)
+        mem = int(mem.readlines()[0].rstrip()) / BYTES
+        return "Memory: {:.2f} GB".format(mem)
 
 
 def os_info():
