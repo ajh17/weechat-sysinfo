@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 # Author: Akshay Hegde <https://github.com/ajh17>
-# NOTE: Only runs on OS X but you can fork this and modify it.
-# NOTE2: The model information is currently partly hard coded.
 
 try:
     import weechat
@@ -20,19 +18,22 @@ SCRIPT_LICENSE = 'GPL3'
 SCRIPT_DESC = 'Prints out system information out to the channel'
 SCRIPT_COMMAND = "sysinfo"
 
-weechat.register(SCRIPT_NAME, SCRIPT_AUTHOR, SCRIPT_VERSION, SCRIPT_LICENSE,
-                 SCRIPT_DESC, SCRIPT_COMMAND, '')
-hook = weechat.hook_command("sysinfo", SCRIPT_DESC, "", "", "",
-                            "get_sysinfo", "")
+weechat.register(
+    SCRIPT_NAME, SCRIPT_AUTHOR, SCRIPT_VERSION, SCRIPT_LICENSE,
+    SCRIPT_DESC, SCRIPT_COMMAND, ''
+)
+hook = weechat.hook_command(
+    "sysinfo", SCRIPT_DESC, "", "", "", "get_sysinfo", ""
+)
 
 
 def model_info():
-    model_command = (
-        "system_profiler SPHardwareDataType |"
-        "egrep 'Model Name' | cut -d':' -f2 | sed 's/ //'"
-    )
-    model = os.popen(model_command).readlines()[0].rstrip()
-    return model + " (15-inch Retina, Late 2013)"
+    plist_path = '~/.weechat/python/sysinfo/data/MacintoshModels.plist'
+    mac_name = os.popen(
+        'defaults read ' + plist_path + ' | '
+        'grep `sysctl -n hw.model` | awk -F\\\" {\'print $4\'}'
+    ).readlines()[0].rstrip()
+    return "Model: {}".format(mac_name)
 
 
 def cpu_info():
@@ -84,7 +85,7 @@ def load_info():
 
 
 def client_info():
-    return "WeeChat {}".format(weechat.info_get("version", ""))
+    return "Client: WeeChat {}".format(weechat.info_get("version", ""))
 
 
 def get_sysinfo(data, buffer, args):
@@ -93,11 +94,11 @@ def get_sysinfo(data, buffer, args):
     gpu, system_info, load = gpu_info(), os_info(), load_info()
     uptime, client = uptime_info(), client_info()
 
-    result_string = "Model: " + computer_model + separator
+    result_string = computer_model + separator
     result_string += cpu_model + separator + memory + separator
     result_string += gpu + separator + uptime + separator
     result_string += load + separator + system_info + separator
-    result_string += "Client: " + client
+    result_string += client
 
     weechat.command(buffer, result_string)
     return weechat.WEECHAT_RC_OK
