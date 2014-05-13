@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Author: Akshay Hegde <https://github.com/ajh17>
 
@@ -89,14 +89,10 @@ def client_info():
 
 
 def get_sysinfo(data, buffer, args):
-    computer_model, cpu_model, memory = model_info(), cpu_info(), ram_info()
-    gpu, system_info, load = gpu_info(), os_info(), load_info()
-    uptime, client = uptime_info(), client_info()
+    item_list = [model_info, cpu_info, ram_info, gpu_info, uptime_info,
+                 load_info, os_info, client_info]
 
-    item_list = [computer_model, cpu_model, memory, gpu, uptime, load,
-                 system_info, client]
-
-    result = " ･ ".join(item_list)
-
+    result = " ･ ".join([func() for func in item_list])
     weechat.command(buffer, result)
+
     return weechat.WEECHAT_RC_OK
