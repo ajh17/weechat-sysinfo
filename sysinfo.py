@@ -64,10 +64,9 @@ def os_info():
 
 def gpu_info():
     gpu_command = (
-        "system_profiler SPDisplaysDataType | egrep 'Chip|VR' | "
-        "cut -d ':' -f 2 | sed 's/ //' | paste -s -d ',' - | "
-        "sed 's/,/ \(/' | sed 's/,/\) + /' |"
-        "sed 's/,/ \(/' | sed 's/$/\)/'"
+        "system_profiler SPDisplaysDataType | egrep 'Ch|VR' | "
+        "grep -Po '(?<=: ).*' | paste -s -d ' ' - |"
+        "sed -E 's/([0-9]+ MB)/(\\1)/g' | sed 's/)/) +/'"
     )
     gpu = os.popen(gpu_command).readlines()[0].rstrip()
     return gpu
