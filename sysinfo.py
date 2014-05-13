@@ -89,16 +89,14 @@ def client_info():
 
 
 def get_sysinfo(data, buffer, args):
-    separator = " ･ "
     computer_model, cpu_model, memory = model_info(), cpu_info(), ram_info()
     gpu, system_info, load = gpu_info(), os_info(), load_info()
     uptime, client = uptime_info(), client_info()
 
-    result_string = computer_model + separator
-    result_string += cpu_model + separator + memory + separator
-    result_string += gpu + separator + uptime + separator
-    result_string += load + separator + system_info + separator
-    result_string += client
+    item_list = [computer_model, cpu_model, memory, gpu, uptime, load,
+                 system_info, client]
 
-    weechat.command(buffer, result_string)
+    result = " ･ ".join(item_list)
+
+    weechat.command(buffer, result)
     return weechat.WEECHAT_RC_OK
