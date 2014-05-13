@@ -56,9 +56,7 @@ def ram_info():
 
 def os_info():
     version_command = (
-        "system_profiler SPSoftwareDataType"
-        "| grep System\ Version | cut -d \":\" -f 2 |"
-        "sed 's/(/(Build /' | sed 's/ //'"
+        "system_profiler SPSoftwareDataType | grep -Po '(?<=: )OS X.*'"
     )
     version = os.popen(version_command).readlines()[0].rstrip()
     return version
