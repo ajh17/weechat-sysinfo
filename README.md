@@ -1,16 +1,14 @@
-# weechat sysinfo
+# weechat-sysinfo
 
-A simple system information script for weechat.
+A simple OS X system information script for weechat.
 
 ## Installation
     git clone https://github.com/ajh17/weechat-sysinfo.git
-    cd weechat-sysinfo && cp sysinfo.py ~/.weechat/python/
-    cd !$ && ln -s sysinfo.py autoload
+    cd weechat-sysinfo
+    cp -R sysinfo.py data/ ~/.weechat/python/
+    ln -s ~/.weechat/python/sysinfo.py ~/.weechat/python/autoload
 
 ## Dependencies
+* WeeChat ≥ 0.4 (compiled with python support)
 * psutil
     * Install with: `[sudo] pip install psutil`
-
-## Caveats
-* Only works with OS X
-* Some of it is hard-coded. Fork and modify the script if you wish.
