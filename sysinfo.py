@@ -76,8 +76,8 @@ def gpu_info():
 
 
 def uptime_info():
-    uptime = os.popen('~/.bin/uptime.zsh').readlines()[0].rstrip()
-    return "Uptime: " + uptime
+    uptime = os.popen('uptime | grep -PZo "(?<=up )[^,]*"').readlines()[0]
+    return "Uptime: " + uptime.rstrip()
 
 
 def load_info():
