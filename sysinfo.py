@@ -105,9 +105,9 @@ def load_info():
 
 
 def client_info():
-    '''
+    """
     Get the IRC Client version information.
-    '''
+    """
     return "Client: WeeChat {}".format(weechat.info_get("version", ""))
 
 
