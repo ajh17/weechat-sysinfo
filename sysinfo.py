@@ -78,7 +78,6 @@ def os_info():
 def gpu_info():
     '''
     Get the GPU information of this machine.
-    NOTE: Currently this only works with Macs with dual GPUs.
     '''
     gpu_command = (
         "system_profiler SPDisplaysDataType |"
