@@ -37,7 +37,7 @@ def model_info():
         'grep `sysctl -n hw.model` | awk -F\\\" {\'print $4\'}'
     )
     with os.popen(model_command) as mac_name:
-        return "Model: {}".format(mac_name.readlines()[0].rstrip())
+        return "{}".format(mac_name.readlines()[0].rstrip())
 
 
 def cpu_info():
@@ -69,7 +69,7 @@ def os_info():
     Get the OS information including the Build number.
     '''
     version_command = (
-        "system_profiler SPSoftwareDataType | grep -Po '(?<=: )OS X.*'"
+        "system_profiler SPSoftwareDataType | egrep -o 'macOS .*'"
     )
     with os.popen(version_command) as version:
         return version.readlines()[0].rstrip()
@@ -81,9 +81,11 @@ def gpu_info():
     NOTE: Currently this only works with Macs with dual GPUs.
     '''
     gpu_command = (
-        "system_profiler SPDisplaysDataType | egrep 'Ch|VR' | "
-        "grep -Po '(?<=: ).*' | paste -s -d ' ' - |"
-        "sed -E 's/([0-9]+ MB)/(\\1)/g' | sed 's/)/) +/'"
+        "system_profiler SPDisplaysDataType |"
+        "egrep 'Chipset Model|VRAM .*:' | paste -s -d ' ' - |"
+        "sed -E 's/([0-9]+ MB)/(\\1)/g' | "
+        "sed 's/   //g' | sed 's/  / /g' |"
+        "sed 's/Chipset/GPU/g'"
     )
     with os.popen(gpu_command) as gpu:
         return gpu.readlines()[0].rstrip()
@@ -93,7 +95,7 @@ def uptime_info():
     '''
     Get the amount of time that this machine has been on for, i.e. the uptime.
     '''
-    with os.popen('uptime | grep -PZo "(?<=up )[^,]*"') as uptime:
+    with os.popen('uptime | grep -o "up .*,"') as uptime:
         return "Uptime: {}".format(uptime.readlines()[0].rstrip())
 
 
