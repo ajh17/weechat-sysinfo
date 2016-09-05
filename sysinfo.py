@@ -29,7 +29,7 @@ hook = weechat.hook_command(
 
 
 def model_info():
-    '''Get this Mac's model name'''
+    """Get this Mac's model name"""
     model_command = (
         'defaults read ~/.weechat/python/sysinfo/data/MacintoshModels.plist |'
         'grep `sysctl -n hw.model` | awk -F\\\" {\'print $4\'}'
@@ -39,9 +39,7 @@ def model_info():
 
 
 def cpu_info():
-    '''Get the processor information, including the number of cores of this
-    machine.
-    '''
+    """Get the processor information of this machine."""
     cpu_command = (
         "sysctl machdep.cpu.brand_string |"
         "awk '{print $2,$3,$4,$5,$6,$7,$8,$9}'"
@@ -60,7 +58,7 @@ def ram_info():
 
 
 def os_info():
-    '''Get the OS information including the Build number.'''
+    """Get the OS information including the Build number."""
     version_command = (
         "system_profiler SPSoftwareDataType | egrep -o 'macOS .*'"
     )
@@ -69,7 +67,7 @@ def os_info():
 
 
 def gpu_info():
-    '''Get the GPU information of this machine.'''
+    """Get the GPU information of this machine."""
     gpu_command = (
         "system_profiler SPDisplaysDataType |"
         "egrep 'Chipset Model|VRAM .*:' | paste -s -d ' ' - |"
@@ -82,13 +80,13 @@ def gpu_info():
 
 
 def uptime_info():
-    '''Get the amount of time that this machine has been on for.'''
+    """Get the amount of time that this machine has been on for."""
     with os.popen('uptime | grep -o "up .*,"') as uptime:
         return "Uptime: {}".format(uptime.readlines()[0].rstrip())
 
 
 def load_info():
-    '''Get the current average CPU load of this machine.'''
+    """Get the current average CPU load of this machine."""
     return "Average Load: {}%".format(psutil.cpu_percent())
 
 
@@ -98,7 +96,7 @@ def client_info():
 
 
 def get_sysinfo(data, buffer, args):
-    '''Gets various system information related to this machine.'''
+    """Get various system information related to this machine."""
     item_list = [model_info, cpu_info, ram_info, gpu_info, uptime_info,
                  load_info, os_info, client_info]
     result = " ･ ".join([func() for func in item_list])
