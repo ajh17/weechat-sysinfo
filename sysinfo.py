@@ -81,7 +81,7 @@ def gpu_info():
 
 def display_info():
     """Get the resolution for the current display."""
-    res_command = ("system_profiler | grep -o 'Resolution: .*'")
+    res_command = ("system_profiler SPDisplaysDataType | grep -o 'Resolution: .*'")
     with os.popen(res_command) as resolution:
         return resolution.readlines()[0].rstrip()
 
