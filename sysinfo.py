@@ -79,6 +79,12 @@ def gpu_info():
         return gpu.readlines()[0].rstrip()
 
 
+def display_info():
+    """Get the resolution for the current display."""
+    res_command = ("system_profiler | grep -o 'Resolution: .*'")
+    with os.popen(res_command) as resolution:
+        return resolution.readlines()[0].rstrip()
+
 def uptime_info():
     """Get the amount of time that this machine has been on for."""
     with os.popen('uptime | grep -o "up .*,"') as uptime:
@@ -97,8 +103,10 @@ def client_info():
 
 def get_sysinfo(data, buffer, args):
     """Get various system information related to this machine."""
-    item_list = [model_info, cpu_info, ram_info, gpu_info, uptime_info,
-                 load_info, os_info, client_info]
+    item_list = [
+        model_info, cpu_info, ram_info, display_info,
+        gpu_info, uptime_info, load_info, os_info, client_info
+    ]
     result = " ･ ".join([func() for func in item_list])
     weechat.command(buffer, result)
 
